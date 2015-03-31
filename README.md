@@ -30,7 +30,9 @@ You can run a commond line tic-tac-toe AI with the command
 The tic-tac-toe board is indexed as:
 
 0 1 2
+
 3 4 5
+
 6 7 8
 
 
