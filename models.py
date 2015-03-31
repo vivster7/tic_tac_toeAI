@@ -2,6 +2,8 @@ from collections import Counter
 from helpers import validate_board, validate_player, validate_cell, validate_input_board
 
 class Player(object):
+    """ A tic-tac-toe player -- either 'x' or 'o'."""
+
     def __init__(self, state):
         self._state = state
 
@@ -13,6 +15,8 @@ class Player(object):
 
 
 class Board(object):
+    """ The tic-tac-toe board with 9 Cells. """
+
     def __init__(self, board):
 
         validate_input_board(board)
@@ -87,6 +91,8 @@ class Board(object):
 
 
 class Cell(object):
+    """ A single unit on the tic-tac-toe board. """
+
 
     NEUTRAL_STATE = "*"
     X_STATE = "x"
