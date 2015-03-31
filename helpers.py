@@ -2,6 +2,9 @@ import sys
 from json import dumps
 from collections import Counter
 
+## Error indicator
+error_occurred = False
+
 ## FORMATTING
 
 def byteify(input):
@@ -19,48 +22,28 @@ def byteify(input):
     else:
         return input
 
-def print_jsonify_error(error):
-    formatted_error = dumps([{"message":error}],
-                                 indent=4, 
-                                 separators=(',',':'))
-    print formatted_error
-    sys.argv.append(formatted_error)
-    sys.exit(1)
-
-def print_jsonify_output(output):
-    json_output = []
-
-    for game_state in output:
-        json_game_state = {"indexes":game_state}
-        json_output.append(json_game_state)
-
-    formatted_output = dumps(json_output, 
-                                    indent=4, 
-                                    separators=(',',':'))
-    print formatted_output
-    sys.exit(0)
-
 ## VALIDATORS
 
 def validate_input_board(board):
-    message = None
+
+    error_message = ''
 
     if board and len(board) < 9:
-        message = "Board is too small."
+        error_message = "Board is too small."
 
     elif board and len(board) > 9:
-        message = "Board is too large."
+        error_message = "Board is too large."
 
     if not board or board == "None":
-        message = "Invalid board -- no board passed in."
+        error_message = "Invalid board -- no board passed in."
 
-    if message: print_jsonify_error(message)
+    if error_message: raise ValueError(error_message)
 
     return None
 
 def validate_board(board, lines):
 
-    message = None
+    error_message = ''
 
     def is_invalid_length():
         return len(board) is not 9
@@ -72,35 +55,40 @@ def validate_board(board, lines):
         return False
 
     if is_at_end_state():
-        message = "Board at end state."
+        error_message = "Board at end state."
 
     if is_invalid_length():
-        message = "Incorrect number of cells."
+        error_message = "Incorrect number of cells."
 
-    if message: print_jsonify_error(message)
+    if error_message: raise ValueError(error_message)
 
     return None
 
 def validate_player(player):
 
-    message = None
+    error_message = ''
 
-    if player.state not in ['x', 'o']:
-        message = "Invalid player -- choose x or o."
+    if player.state not in ['x', 'o'] or len(player.state) != 1:
+        error_message = "Invalid player -- choose x or o."
 
     if not player.state:
-        message = "Invalid player -- please pass in a player."
+        error_message = "Invalid player -- please pass in a player."
 
-    if message: print_jsonify_error(message)
+    if error_message: raise ValueError(error_message)
 
     return None
 
 
 def validate_cell(cell):
+
+    error_message = ''
+
     if cell.state not in ['*', 'x', 'o']:
-        message = "Invalid cell state for cell {0}.".format(cell.id)
-        print_jsonify_error(message)
+        error_message = "Invalid cell state for cell {0}.".format(cell.id)
 
     if cell.id < 0 or cell.id > 8:
-        message = "Invalid cell id {0}.".format(cell.id)
-        print_jsonify_error(message)
+        error_message = "Invalid cell id {0}.".format(cell.id)
+        
+    if error_message: raise ValueError(error_message)
+
+    return None

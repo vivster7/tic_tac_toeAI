@@ -8,6 +8,7 @@ class Player(object):
         self._state = state
 
         validate_player(self)
+            
 
     @property
     def state(self):
