@@ -31,7 +31,10 @@ def main():
             output.append({"message":e.message})
             helpers.error_occurred = True
 
-    print dumps(output, indent=4, separators=(',',':'))
+    json_output = dumps(output, indent=4, separators=(',',':'))
+
+    print json_output
+    return json_output
 
 if __name__ == "__main__":
     main()

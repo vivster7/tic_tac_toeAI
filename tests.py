@@ -13,22 +13,6 @@ class TestValidTicTacToeAI(unittest.TestCase):
         sys.argv = self.old_sys_argv
         self._input = None
 
-    def test_systemExit0(self):
-
-        self._input = dumps([
-                                {
-                                    "board":"****x****",
-                                    "player": "o"
-                                }
-                            ])
-
-        sys.argv = ['', self._input]
-
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(e.message, 0)
-
     def test_given_in_problem_statement(self):
         self._input = dumps([
                                 {
@@ -46,17 +30,14 @@ class TestValidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(),
-                                dumps([ 
-                                        {"indexes": [8, 6, 2, 0, 7, 5, 3, 1]}, 
-                                        {"indexes": [1, 2, 6, 8, 3]}, 
-                                        {"indexes": [3, 0, 8, 6, 7]} ], 
-                                        indent=4, separators=(',',':')
-                                    )
-                            )
+        self.assertEqual(main(),
+                            dumps([ 
+                                    {"indexes": [8, 6, 2, 0, 7, 5, 3, 1]}, 
+                                    {"indexes": [1, 2, 6, 8, 3]}, 
+                                    {"indexes": [3, 0, 8, 6, 7]} ], 
+                                    indent=4, separators=(',',':')
+                                )
+                        )
 
 
     def test_output_given_for_each_board_input(self):
@@ -74,15 +55,12 @@ class TestValidTicTacToeAI(unittest.TestCase):
 
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                                dumps([
-                                        {"indexes": [3, 0, 8, 7, 6]},
-                                        {"message": "Board at end state."}],
-                                        indent=4, separators=(',',':'))
-                                    )
+        self.assertEqual(main(), 
+                            dumps([
+                                    {"indexes": [3, 0, 8, 6, 7]},
+                                    {"message": "Board at end state."}],
+                                    indent=4, separators=(',',':'))
+                                )
 
 
 class TestInvalidTicTacToeAI(unittest.TestCase):
@@ -103,14 +81,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                                dumps([
-                                        {"message": "Board is too small."}], 
-                                        indent=4, separators=(',',':'))
-                                    )
+        self.assertEqual(main(), 
+                            dumps([
+                                    {"message": "Board is too small."}], 
+                                    indent=4, separators=(',',':'))
+                                )
 
     def test_invalid_board_too_many_cells(self):
         self._input = dumps([
@@ -121,14 +96,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps( [
-                                    {"message": "Board is too large."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps( [
+                                {"message": "Board is too large."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
     def test_invalid_board_wrong_cell_type(self):
         self._input = dumps([
@@ -139,14 +111,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                            ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps([
-                                    {"message": "Invalid cell state for cell 1."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps([
+                                {"message": "Invalid cell state for cell 1."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
     def test_invalid_board_not_passed_in(self):
         self._input = dumps([
@@ -156,14 +125,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps([
-                                    {"message": "Invalid board -- no board passed in."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps([
+                                {"message": "Invalid board -- no board passed in."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
     def test_board_at_end_state(self):
         self._input = dumps([
@@ -174,14 +140,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps(
-                                    [{"message": "Board at end state."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps(
+                                [{"message": "Board at end state."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
     def test_invalid_player_not_passed_in(self):
         self._input = dumps([
@@ -191,14 +154,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps([
-                                    {"message": "Invalid player -- please pass in a player."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps([
+                                {"message": "Invalid player -- please pass in a player."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
     def test_invalid_player_wrong_player_type(self):
         self._input = dumps([
@@ -209,14 +169,11 @@ class TestInvalidTicTacToeAI(unittest.TestCase):
                             ])
         sys.argv = ['', self._input]
 
-        try:
-            main()
-        except SystemExit as e:
-            self.assertEqual(sys.stdout.getvalue().strip(), 
-                            dumps([
-                                    {"message": "Invalid player -- choose x or o."}], 
-                                    indent=4, separators=(',',':'))
-                                )
+        self.assertEqual(main(), 
+                        dumps([
+                                {"message": "Invalid player -- choose x or o."}], 
+                                indent=4, separators=(',',':'))
+                            )
 
 if __name__ == '__main__':
     unittest.main(module=__name__, buffer=True, exit=True)
